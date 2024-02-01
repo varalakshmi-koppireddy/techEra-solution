@@ -2,20 +2,9 @@ import {Component} from 'react'
 
 import Loader from 'react-loader-spinner'
 
-import Header from '../Header'
 import CourseItem from '../CourseItem'
 
-import {
-  BgContainer,
-  LoaderContainer,
-  CoursesHeading,
-  ListOfCourses,
-  FailureContainer,
-  ImageText,
-  FailureText,
-  FailureDescription,
-  RetryButton,
-} from './styledComponents'
+import './index.css'
 
 const apiStatusConstants = {
   initial: 'INITIAL',
@@ -40,13 +29,16 @@ class Home extends Component {
     const response = await fetch(apiUrl, options)
     if (response.ok) {
       const fetchedData = await response.json()
-      const updatedData = fetchedData.map(each => ({
+      const updatedData = fetchedData.courses.map(each => ({
         id: each.id,
         name: each.name,
         logoUrl: each.logo_url,
       }))
 
-      this.setState({apiStatus: apiStatusConstants.success})
+      this.setState({
+        coursesList: updatedData,
+        apiStatus: apiStatusConstants.success,
+      })
     } else {
       this.setState({apiStatus: apiStatusConstants.failure})
     }
@@ -57,39 +49,40 @@ class Home extends Component {
   }
 
   renderLoadingView = () => (
-    <LoaderContainer data-testid="loader">
+    <div className="loader-container" data-testid="loader">
       <Loader type="ThreeDots" color="#00BFFF" height={50} width={50} />
-    </LoaderContainer>
+    </div>
   )
 
   renderFailureView = () => (
-    <FailureContainer>
-      <ImageText
+    <div className="failure-container">
+      <img
+        className="image-text"
         src="https://assets.ccbp.in/frontend/react-js/tech-era/failure-img.png"
         alt="failure view"
       />
-      <FailureText>Oops! Something Went Wrong</FailureText>
-      <FailureDescription>
+      <h1 className="failure-text">Oops! Something Went Wrong</h1>
+      <p className="failure-description">
         We cannot seem to find the page you are looking for.
-      </FailureDescription>
-      <RetryButton type="button" onClick={this.onRetry}>
+      </p>
+      <button className="retry-button" type="button" onClick={this.onRetry}>
         Retry
-      </RetryButton>
-    </FailureContainer>
+      </button>
+    </div>
   )
 
   renderSuccessView = () => {
     const {coursesList} = this.state
 
     return (
-      <BgContainer>
-        <CoursesHeading>Courses</CoursesHeading>
-        <ListOfCourses>
+      <div className="bg-container">
+        <h1 className="courses-heading">Courses</h1>
+        <ul className="list-of-courses">
           {coursesList.map(eachCourse => (
             <CourseItem key={eachCourse.id} courseItemDetails={eachCourse} />
           ))}
-        </ListOfCourses>
-      </BgContainer>
+        </ul>
+      </div>
     )
   }
 
@@ -98,13 +91,13 @@ class Home extends Component {
 
     switch (apiStatus) {
       case apiStatusConstants.inProgress:
-        this.renderLoadingView()
+        return this.renderLoadingView()
       case apiStatusConstants.success:
-        this.renderSuccessView()
+        return this.renderSuccessView()
       case apiStatusConstants.failure:
-        this.renderFailureView()
+        return this.renderFailureView()
       default:
-        null
+        return null
     }
   }
 

@@ -1,6 +1,6 @@
 import {Link} from 'react-router-dom'
 
-import {ListItem, ImageLogo, NameText} from './styledComponents'
+import './index.css'
 
 const CourseItem = props => {
   const {courseItemDetails} = props
@@ -8,10 +8,10 @@ const CourseItem = props => {
 
   return (
     <Link to={`/courses/${id}`}>
-      <ListItem>
-        <ImageLogo src={logoUrl} alt={name} />
-        <NameText>{name}</NameText>
-      </ListItem>
+      <li className="list-item">
+        <img className="image-logo" src={logoUrl} alt={name} />
+        <p className="name-text">{name}</p>
+      </li>
     </Link>
   )
 }

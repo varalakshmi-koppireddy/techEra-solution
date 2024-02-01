@@ -2,19 +2,7 @@ import {Component} from 'react'
 
 import Loader from 'react-loader-spinner'
 
-import {
-  CourseItemContainer,
-  CourseImg,
-  NameDesCon,
-  Heading,
-  Paragraph,
-  FailureContainer,
-  ImageText,
-  FailureText,
-  FailureDescription,
-  RetryButton,
-  LoaderContainer,
-} from './styledComponents'
+import './index.css'
 
 const apiStatusConstants = {
   initial: 'INITIAL',
@@ -36,7 +24,7 @@ class CourseDetails extends Component {
     const {params} = match
     const {id} = params
 
-    const apiUrl = ' https://apis.ccbp.in/te/courses/:id'
+    const apiUrl = `https://apis.ccbp.in/te/courses/${id}`
     const options = {
       method: 'GET',
     }
@@ -45,13 +33,17 @@ class CourseDetails extends Component {
     if (response.ok) {
       const fetchedData = await response.json()
       const updatedData = {
-        id: fetchedData.id,
-        name: fetchedData.name,
-        imageUrl: fetchedData.image_url,
-        description: fetchedData.description,
+        id: fetchedData.course_details.id,
+        name: fetchedData.course_details.name,
+        imageUrl: fetchedData.course_details.image_url,
+        description: fetchedData.course_details.description,
       }
+      console.log(updatedData)
 
-      this.setState({apiStatus: apiStatusConstants.success})
+      this.setState({
+        courseDetails: updatedData,
+        apiStatus: apiStatusConstants.success,
+      })
     } else {
       this.setState({apiStatus: apiStatusConstants.failure})
     }
@@ -62,25 +54,26 @@ class CourseDetails extends Component {
   }
 
   renderLoadingView = () => (
-    <LoaderContainer data-testid="loader">
+    <div className="loader-container" data-testid="loader">
       <Loader type="ThreeDots" color="#00BFFF" height={50} width={50} />
-    </LoaderContainer>
+    </div>
   )
 
   renderFailureView = () => (
-    <FailureContainer>
-      <ImageText
+    <div className="failure-container">
+      <img
+        className="image-text"
         src="https://assets.ccbp.in/frontend/react-js/tech-era/failure-img.png"
         alt="failure view"
       />
-      <FailureText>Oops! Something Went Wrong</FailureText>
-      <FailureDescription>
+      <h1 className="failure-text">Oops! Something Went Wrong</h1>
+      <p className="failure-description">
         We cannot seem to find the page you are looking for.
-      </FailureDescription>
-      <RetryButton type="button" onClick={this.onRetry}>
+      </p>
+      <button className="retry-button" type="button" onClick={this.onRetry}>
         Retry
-      </RetryButton>
-    </FailureContainer>
+      </button>
+    </div>
   )
 
   renderSuccessView = () => {
@@ -88,13 +81,13 @@ class CourseDetails extends Component {
     const {name, imageUrl, description} = courseDetails
 
     return (
-      <CourseItemContainer>
-        <CourseImg src={imageUrl} alt={name} />
-        <NameDesCon>
-          <Heading>{name}</Heading>
-          <Paragraph>{description}</Paragraph>
-        </NameDesCon>
-      </CourseItemContainer>
+      <div className="course-item-container">
+        <img className="course-img" src={imageUrl} alt={name} />
+        <div className="name-des-con">
+          <h1 className="heading">{name}</h1>
+          <p className="paragraph">{description}</p>
+        </div>
+      </div>
     )
   }
 
@@ -103,13 +96,13 @@ class CourseDetails extends Component {
 
     switch (apiStatus) {
       case apiStatusConstants.inProgress:
-        this.renderLoadingView()
+        return this.renderLoadingView()
       case apiStatusConstants.success:
-        this.renderSuccessView()
+        return this.renderSuccessView()
       case apiStatusConstants.failure:
-        this.renderFailureView()
+        return this.renderFailureView()
       default:
-        null
+        return null
     }
   }
 

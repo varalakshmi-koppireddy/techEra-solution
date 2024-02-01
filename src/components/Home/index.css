@@ -1,54 +1,52 @@
-import styled from 'styled-components'
-
-export const BgContainer = styled.div`
+.bg-container {
   background-color: #ffffff;
   height: 90vh;
   width: 100%;
   padding-top: 150px;
   padding-left: 100px;
   padding-right: 100px;
-`
-export const CoursesHeading = styled.h1`
+}
+.courses-heading {
   font-family: 'Roboto';
   font-size: 35px;
   color: #1e293b;
-`
-export const ListOfCourses = styled.ul`
+}
+.list-of-courses {
   list-style-type: none;
   padding-left: 0;
   display: flex;
   flex-wrap: wrap;
-`
-export const LoaderContainer = styled.div`
+}
+.loader-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 90vh;
   width: 100%;
-`
-export const FailureContainer = styled.div`
+}
+.failure-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 90vh;
   width: 100%;
-`
-export const ImageText = styled.img`
+}
+.image-text {
   height: 180px;
   width: 180px;
-`
-export const FailureText = styled.h1`
+}
+.failure-text {
   font-family: 'Roboto';
   font-size: 32px;
   color: #475569;
-`
-export const FailureDescription = styled.p`
+}
+.failure-description {
   font-family: 'Roboto';
   font-size: 16px;
   color: #64748b;
-`
-export const RetryButton = styled.button`
+}
+.retry-button {
   border: none;
   font-family: 'Roboto';
   font-size: 16px;
@@ -61,4 +59,4 @@ export const RetryButton = styled.button`
   border-radius: 8px;
   color: #ffffff;
   outline: none;
-`
+}
